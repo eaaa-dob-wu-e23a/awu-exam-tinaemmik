@@ -1,7 +1,2 @@
-//import {useEffect, useState} from "react";
+import mongoose from "mongoose";
 
-//export default function UserAccount() {
-    //const [user, setUser] = useState({});
-    //useEffect(() => {
-        
-//};

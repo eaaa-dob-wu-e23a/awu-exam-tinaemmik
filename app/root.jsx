@@ -17,7 +17,7 @@ export const links = () => [
 ];
 
 export function meta() {
-  return [{ title: "Work Journal" }];
+  return [{ title: "AWU EXAM" }];
 }
 
 export default function App() {
