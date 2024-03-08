@@ -3,10 +3,10 @@
 //export default function Nav() {
     //return(
         //<nav>
-            //<NavLink to="#">Oversigt</NavLink>
+            //<NavLink to="#">Dashboard</NavLink>
+            //<NavLink to="#">Profil</NavLink>
             //<NavLink to="#">Events</NavLink>
-            //<NavLink to="#">Ny Event</NavLink>
-            //<NavLink to="#">Redigere Profil</NavLink>
+            //<NavLink to="#">tilføj Event</NavLink>
         //</nav>
     //)
 //};
