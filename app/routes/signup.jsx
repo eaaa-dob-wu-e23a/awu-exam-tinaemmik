@@ -26,7 +26,7 @@ export default function SignUp() {
                     <p className="px-10 text-gray-600">Here you can find and add events</p>
                 </div>
                 <div className="w-1/2 py-10 px-8">
-                <h1 className="text-3xl text-gray-700 font-bold mb-4">Create account</h1>
+                <h1 className="text-3xl text-gray-700 font-bold mb-4">Create  account</h1>
                 <Form method="post" className="space-y-6">
                     <div>
                         <label htmlFor="name" className="block text-md font-medium text-gray-600">
