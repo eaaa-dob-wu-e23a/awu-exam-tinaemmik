@@ -46,8 +46,8 @@ async function insertData() {
   const Event = mongoose.model("Event", eventSchema);
 
   console.log("Dropping user and event collection...");
-  await User.collection.drop();
-  await Event.collection.drop();
+  await users.collection.drop();
+  await events.collection.drop();
 
   console.log("Creating test users...");
 
