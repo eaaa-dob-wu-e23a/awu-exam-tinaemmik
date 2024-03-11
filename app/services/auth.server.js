@@ -1,7 +1,7 @@
 import { Authenticator, AuthorizationError } from "remix-auth";
 import { sessionStorage} from "~/services/session.server";
 import { FormStrategy } from "remix-auth-form";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 
 
