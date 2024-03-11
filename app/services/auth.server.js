@@ -46,7 +46,7 @@ async function verifyUser({ email, password }) {
         throw new AuthorizationError("No user found");
     }
 
-    const passwordMatch = await bcrypt.compare(pasword, user.password);
+    const passwordMatch = await bcrypt.compare(password, user.password);
     if(!passwordMatch){
         throw new AuthorizationError("Password does not match");
     }

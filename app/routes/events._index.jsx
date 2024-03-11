@@ -1,32 +1,27 @@
 import mongoose from "mongoose";
 import { useLoaderData, Link } from "@remix-run/react";
+import { authenticator } from "~/services/auth.server";
 //import { format, startOfWeek } from "date-fns";
 
+export function meta() {
+  return {
+    title: "Events",
+    description: "Find and add events in your area",
+  };
+};
 
 // LOADER 
-  export async function loader() {
-        //let session = await getSession(request.headers.get("cookie"));
-      
-        const events = await mongoose.models.Event.find()
-          .sort({ date: -1 })
-          .lean()
-          .exec();
-        
-        return{
-          //session: session.data,
-          events: events.map((Event)=> ({
-           ...Event,
-          date: Event.date.toISOString().substring(0, 10),
-          })),
-        };
-    };
-
+export async function loader({ request }) {
+  await authenticator.isAuthenticated(request, {
+    failureRedirect: "/signin",
+  });
+};
 //export default function action(){
 
 //};
 
 export default function Events() {
-    const { Event } = useLoaderData();
+    //const { Event } = useLoaderData();
 
     //const eventsByWeek = events.reduce((acc, entry) => {
       //const weekStart = format(startOfWeek(new Date(event.date)), 'yyyy-MM-dd');
