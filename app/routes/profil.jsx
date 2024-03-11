@@ -1,16 +1,24 @@
-//export default function loader() {
-    
-//};
+import { useLoaderData, params } from "@remix-run/react";
+import { mongoose } from "mongoose";
 
-//export default function action(){
+export const loader = async ({ request, params }) => {
+    async ({ params }) => {
+        const User = await mongoose.User.find({ _id: params.UserId })
+        if(!User) throw new Error("Event not found")
 
-//};
-export default function Profil() {
+        const data = { User }
+        return data
+};
+}
+
+export default function Profil(){
+    const { User } = useLoaderData();
+
     return(
-        <div className="min h-screen py-40 bg-gray-200">
-            <div className="flex w-8/12  bg-gray-200 rounded-xl mx-auto shadow-lg overflow-hidden">
-                <h2 className="text-3xl text-gray-700 font-bold mb-4 font-sans">Profil</h2>
-            </div>
+        <div>
+            <h1>{User.name}</h1>
+            <p>{User.city}</p>
+            <p>{User.mail}</p>
         </div>
-    )
+);
 };

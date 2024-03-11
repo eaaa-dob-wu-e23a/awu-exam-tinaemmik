@@ -7,28 +7,28 @@ import {
 export function meta() {    
     return [
         {
-            title: "Sign Up",
-            description: "Sign up for an account",
+            title: "Create account",
+            description: "Create an account",
         }
     ]
 };
 
+//LOADER
 
 //ACTION
-    //export const action = ({request}) => {
-    //    let formData = await request.formData();
+//export const action = ({request}) => {
+        //let formData = await request.formData();
 
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
+        //await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    //const {name, city, email, password} = Object.fromEntries(formData);
-    //return await mongoose.models.User.create({name, city, email, password});
-//};
+        //const {name, city, email, password} = Object.fromEntries(formData);
+        //return await mongoose.models.User.create({name, city, email, password});
+    //};
 
-//LOADER
 
 
 export default function SignUp() {
-    //const fetcher = useFetcher();
+    const fetcher = useFetcher();
 
     return(
         <div className="min h-screen py-40 bg-gray-700">

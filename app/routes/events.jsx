@@ -1,32 +1,32 @@
-// import mongoose from "mongoose";
-// import { useLoaderData } from "@remix-run/react";
-// import { format, startOfWeek } from "date-fns";
+import mongoose from "mongoose";
+import { useLoaderData, Link } from "@remix-run/react";
+//import { format, startOfWeek } from "date-fns";
 
 
 // LOADER 
-    //export async function loader() {
+  export async function loader() {
         //let session = await getSession(request.headers.get("cookie"));
       
-        //const events = await mongoose.models.Event.find()
-          //.sort({ date: -1 })
-          //.lean()
-          //.exec();
+        const events = await mongoose.models.Event.find()
+          .sort({ date: -1 })
+          .lean()
+          .exec();
         
-        //return{
+        return{
           //session: session.data,
-          //events: events.map((Event)=> ({
-            //...event,
-            //date: event.date.toISOString().substring(0, 10),
-          //})),
-        //};
-      //};
+          events: events.map((Event)=> ({
+           ...Event,
+          date: Event.date.toISOString().substring(0, 10),
+          })),
+        };
+    };
 
 //export default function action(){
 
 //};
 
 export default function Events() {
-    //const { events } = useLoaderData();
+    const { Event } = useLoaderData();
 
     //const eventsByWeek = events.reduce((acc, entry) => {
       //const weekStart = format(startOfWeek(new Date(event.date)), 'yyyy-MM-dd');
@@ -40,10 +40,8 @@ export default function Events() {
     return(
         <div className="min h-screen py-40 bg-gray-200">
             <h1 className="text-3xl text-gray-700 font-bold mb-4 font-sans">Events</h1>
-            
-            <div className="flex bg-gray-200 rounded-xl mx-auto shadow-lg overflow-hidden">
-               
-            </div>
+            <link to ="/NewEvent" className="text-white">Tilføj Event</link>
+
         </div>
     )
 };
