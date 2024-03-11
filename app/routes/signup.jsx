@@ -1,7 +1,8 @@
-import {
-    Form, 
-    Link,
-    useFetcher} from "@remix-run/react";
+import { Form, Link, useLoaderData } from "@remix-run/react";
+import { json, redirect } from "@remix-run/node";
+import mongoose from "mongoose";
+import { authenticator } from "~/services/auth.server";
+import { sessionStorage } from "~/services/session.server";
 
 //what is in meta data
 export function meta() {    
@@ -14,6 +15,23 @@ export function meta() {
 };
 
 //LOADER
+export async function loader({request}) {
+
+    await authenticator.isAuthenticated(request,{
+        successRedirect: "/events",
+    });
+
+    const session = await sessionStorage.getSession(request.headers.get("Cookie"));
+    const error = session.get("sessionErrorKey");
+
+    session.unset("sessionErrorKey");
+
+    const headers = new Headers({
+        "Set-Cookie": await sessionStorage.commitSession(session),
+    });
+
+    return json({error}, {headers});
+};
 
 //ACTION
 //export const action = ({request}) => {
@@ -28,7 +46,8 @@ export function meta() {
 
 
 export default function SignUp() {
-    const fetcher = useFetcher();
+    const loaderData = useLoaderData();
+    console.log("error:", loaderData?.error);
 
     return(
         <div className="min h-screen py-40 bg-gray-700">
@@ -40,11 +59,7 @@ export default function SignUp() {
                     </div>
                 <div className="w-1/2 py-10 px-8">
                 <h1 className="text-3xl text-gray-700 font-bold mb-4">Create account</h1>
-                <fetcher.Form method="post" className="space-y-6">
-                    <fieldset
-                    className="disabled:opacity-70"
-                    disabled={fetcher.state === "submitting"}
-                    >
+                <Form method="post" className="space-y-6">
                     <div>
                         <label htmlFor="name" className="block text-md font-medium text-gray-600">
                             Name
@@ -101,8 +116,7 @@ export default function SignUp() {
                             Create account
                         </button>
                     </div>
-                    </fieldset>
-                </fetcher.Form>
+                </Form>
                 <div className="mt-4">
                     <p className="text-gray-500">Already have an account?</p>
                     <Link to="/signin" className="text-blue-600">
@@ -114,4 +128,19 @@ export default function SignUp() {
             </div>
         </div>
     );
+};
+
+export async function action({request}) {
+
+    try{
+        const formData = await request.formData();
+        const newUser = Object.fromEntries(formData);
+        await mongoose.models.User.create(newUser);
+
+        return redirect("/signin");
+    }catch (error) {
+        console.error(error);
+        return redirect("/signup");
+    }                     
+
 };
