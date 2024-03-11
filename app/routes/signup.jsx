@@ -1,4 +1,7 @@
-import {Form, Link} from "@remix-run/react";
+import {
+    Form, 
+    Link,
+    useFetcher} from "@remix-run/react";
 
 //what is in meta data
 export function meta() {    
@@ -9,15 +12,24 @@ export function meta() {
         }
     ]
 };
-//export default function loader() {
-    
+
+
+//ACTION
+    //export const action = ({request}) => {
+    //    let formData = await request.formData();
+
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    //const {name, city, email, password} = Object.fromEntries(formData);
+    //return await mongoose.models.User.create({name, city, email, password});
 //};
 
-//export default function action(){
+//LOADER
 
-//};
 
 export default function SignUp() {
+    //const fetcher = useFetcher();
+
     return(
         <div className="min h-screen py-40 bg-gray-700">
             <div className="container mx-auto">
@@ -28,7 +40,11 @@ export default function SignUp() {
                     </div>
                 <div className="w-1/2 py-10 px-8">
                 <h1 className="text-3xl text-gray-700 font-bold mb-4">Create account</h1>
-                <Form method="post" className="space-y-6">
+                <fetcher.Form method="post" className="space-y-6">
+                    <fieldset
+                    className="disabled:opacity-70"
+                    disabled={fetcher.state === "submitting"}
+                    >
                     <div>
                         <label htmlFor="name" className="block text-md font-medium text-gray-600">
                             Name
@@ -85,7 +101,8 @@ export default function SignUp() {
                             Create account
                         </button>
                     </div>
-                </Form>
+                    </fieldset>
+                </fetcher.Form>
                 <div className="mt-4">
                     <p className="text-gray-500">Already have an account?</p>
                     <Link to="/signin" className="text-blue-600">

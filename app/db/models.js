@@ -39,15 +39,65 @@ const eventSchema = new mongoose.Schema(
   {timestamps: true }
 );
 
+const entrySchema = new Schema(
+  {
+    date: {
+      type: Date,
+      required: true,
+    },
+    type: {
+      type: String,
+      enum: ["work", "learning", "interesting-thing"],
+      required: true,
+    },
+    text: {
+      type: String,
+      required: true,
+    },
+  },
+  // Automatically add `createdAt` and `updatedAt` timestamps:
+  // https://mongoosejs.com/docs/timestamps.html
+  { timestamps: true },
+);
+
+// For each model you want to create, please define the model's name, the
+// associated schema (defined above), and the name of the associated collection
+// in the database (which will be created automatically).
+export const models = [
+  {
+    name: "Entry",
+    schema: entrySchema,
+    collection: "entries",
+  },
+  {
+    name: "User",
+    schema: userSchema,
+    collection: "users",
+  },
+  {
+    name: "Event",
+    schema: eventSchema,
+    collection: "events",
+  },
+];
+
+export async function initData(){
+  const userCount = await mongoose.models.User.countDocuments();
+  const eventCount = await mongoose.models.Event.countDocuments();
+
+  if(userCount === 0 || eventCount === 0){
+    await insertData();
+  }
+}
 
 //Create test users
 async function insertData() {
-  const User = mongoose.model("User", userSchema);
-  const Event = mongoose.model("Event", eventSchema);
+  const User = mongoose.models.User;
+  const Event = mongoose.models.Event;
 
   console.log("Dropping user and event collection...");
-  await users.collection.drop();
-  await events.collection.drop();
+  await User.collection.drop();
+  await Event.collection.drop();
 
   console.log("Creating test users...");
 
@@ -114,44 +164,3 @@ async function insertData() {
     }
   ]);
 }
-const entrySchema = new Schema(
-  {
-    date: {
-      type: Date,
-      required: true,
-    },
-    type: {
-      type: String,
-      enum: ["work", "learning", "interesting-thing"],
-      required: true,
-    },
-    text: {
-      type: String,
-      required: true,
-    },
-  },
-  // Automatically add `createdAt` and `updatedAt` timestamps:
-  // https://mongoosejs.com/docs/timestamps.html
-  { timestamps: true },
-);
-
-// For each model you want to create, please define the model's name, the
-// associated schema (defined above), and the name of the associated collection
-// in the database (which will be created automatically).
-export const models = [
-  {
-    name: "Entry",
-    schema: entrySchema,
-    collection: "entries",
-  },
-  {
-    name: "User",
-    schema: userSchema,
-    collection: "users",
-  },
-  {
-    name: "Event",
-    schema: eventSchema,
-    collection: "events",
-  },
-];
