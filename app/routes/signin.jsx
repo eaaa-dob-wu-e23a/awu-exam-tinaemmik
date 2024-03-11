@@ -1,14 +1,29 @@
-import {Form, Link} from "@remix-run/react";
+import {Form, Link, useLoaderData} from "@remix-run/react";
+import { json } from "@remix-run/node";
+import { authenticator } from "~/services/auth.server";
+import { sessionStorage } from "~/services/session.server";
 
-//export default function loader() {
+export async function loader({request}){
     
-//};
+    return await authenticator.isAuthenticated(request,{
+        successRedirect: "/events",
+    });
+   
+    const session = await sessionStorage.getSession(request.headers.get("Cookie"));
+    const error = session.get("sessionErrorKey");
 
-//export default function action(){
+    session.unset("sessionErrorKey");
 
-//};
+    const headers = new Headers({ 
+        "Set-Cookie": await sessionStorage.commitSession(session),
+    });
+
+    return json({error}, {headers});
+};
 
 export default function SignIn() {
+    const loaderData = useLoaderData();
+
     return (
         <div className="min h-screen py-40 bg-gray-700">
             <div className="container mx-auto">
@@ -53,6 +68,11 @@ export default function SignIn() {
                                 Login
                             </button>
                         </div>
+                        {loaderData?.error ? (
+                        <div className="error-message">
+                        <p>{loaderData?.error?.message}</p>
+                        </div>
+                        ) : null}
                     </Form>
                     <div className="mt-4">
                         <p className="text-gray-500">Don't have an account?</p>
@@ -66,3 +86,12 @@ export default function SignIn() {
         </div>
     );
     };
+
+export async function action({request}){
+
+    return await authenticator.authenticate("user-pass", request, {
+        successRedirect: "/events",
+        failureRedirect: "/signin",
+    });
+
+};

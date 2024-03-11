@@ -1,14 +1,10 @@
-import { json } from "@remix-run/node";
-import { redirect } from "@remix-run/react";
-import mongoose from "mongoose";
+import { authenticator } from "~/services/auth.server";
 
 
-//export async function loader() {
-  //const entries = await mongoose.models.Entry.find({});
-  //return json({ entries });
-//}
-
-export default function Index() {
-
-  return redirect ("/signin");
-}
+export async function loader({request}){
+  
+  return await authenticator.isAuthenticated(request,{
+    successRedirect: "/events",
+    failureRedirect: "/signin",
+  });
+};
