@@ -6,7 +6,7 @@ import { sessionStorage } from "~/services/session.server";
 export async function loader({request}){
     
     return await authenticator.isAuthenticated(request,{
-        successRedirect: "/dashboard",
+        successRedirect: "/profile",
     });
    
     const session = await sessionStorage.getSession(request.headers.get("Cookie"));
