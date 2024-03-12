@@ -55,7 +55,9 @@ async function insertData() {
       image: "https://images.unsplash.com/photo-1579539760267-b2e78d9d735e?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       date: new Date("2024-07-08"),
       location: "København",
-      user: arne._id
+      user: arne._id,
+      tags: ["improv", "teater"]
+
     },
     {
       title: "Audition til teaterstykke",
@@ -63,7 +65,8 @@ async function insertData() {
       image: "https://images.unsplash.com/photo-1516307365426-bea591f05011?q=80&w=859&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       date: new Date("2024-10-22"),
       location: "Aarhus",
-      user: birgit._id
+      user: birgit._id,
+      tags: ["audition", "teater"]
     },
     {
       title: "Social teateraften",
@@ -71,7 +74,8 @@ async function insertData() {
       image: "https://images.unsplash.com/photo-1579539760267-b2e78d9d735e?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       date: new Date("2024-07-10"),
       location: "Odense",
-      user: carsten._id
+      user: carsten._id,
+      tags: ["social", "teater"]
     },
     {
       title: "Improv komedie aften",
@@ -79,7 +83,18 @@ async function insertData() {
       image: "https://images.unsplash.com/photo-1516307365426-bea591f05011?q=80&w=859&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       date: new Date("2024-07-11"),
       location: "Aalborg",
-      user: dorthe._id
-    }
+      user: dorthe._id,
+      tags: ["improv", "teater"]
+    },
+    {
+    title: "Manglende skuespillere",
+    description: "Vi spiller et stykke og mangler skuespillere",
+    image: "https://images.unsplash.com/photo-1579539760267-b2e78d9d735e?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    date: new Date("2024-07-10"),
+    location: "Odense",
+    user: carsten._id,
+    tags: ["audition", "teater"]
+  },
+
   ]);
 }

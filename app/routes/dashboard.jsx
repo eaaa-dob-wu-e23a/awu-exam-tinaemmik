@@ -1,7 +1,7 @@
-import { json } from "@remix-run/node"
 import Nav from "../components/Nav.jsx";
+import { Link, Form, useLoaderData, useSubmit } from "@remix-run/react";
+import { json } from "@remix-run/node";
 import mongoose from "mongoose";
-import { useLoaderData } from "@remix-run/react";
 import { authenticator } from "~/services/auth.server";
 
 //LOADER 
@@ -11,53 +11,111 @@ export async function loader({ request }) {
 });
 return { success: true}
 
-//const url = new URL(request.url);
-//const q = url.searchParams.get("q") || "";
-//const sortBy = url.searchParams.get("sortBy") || "date";
+    const url = new URL(request.url);
+    const q = url.searchParams.get("q") || "";
+    const sortBy = url.searchParams.get("sort-by") || "date";
+    const filterTags = url.searchParams.get("tag") || "";
 
-//const sortOptions = {};
-//sortOptions[sortBy] = sortBy != "caption" ? -1 : 1;
+    const sortOptions = {};
+    sortOptions[sortBy] = sortBy != "title" ? -1 : 1;
 
+    const query = { title: { $regex: q, $options: "i" } };
+    if (filterTags) {
+        query.tags = filterTags;
+    }
 
+    const events = await mongoose.models.Event.find(query)
+    .sort(sortOptions)
+    .populate("User");
 
-//const events = await mongoose.models.Event.find();
-//return {events};
+    const specialTags = await mongoose.models.Event.aggregate([
+        { $unwind: "$tags" },
+        { $group: { _id: "$tags"} },
+        { $sort: { _id: 1 } },
+        { $project: { _id: 0, tag: "$_id" } },
+    ]);
 
+    const tags = specialTags.map((tagDoc) => tagDoc.tag);
 
+    return json({
+        events,
+        tags,
+        q,
+        sortBy,
+        filterTags,
+    });
 };
 
 export default function Dashboard() {
-    const { events } = useLoaderData();
-    console.log(events);
+    const { events, tags, q, sortBy, filterTags } = useLoaderData();
+    const submit = useSubmit();
+    
+    function handleFilterSubmit(e) {
+        const isFirstSearch = q === null;
+        submit(e.currentTarget, {
+            replace: !isFirstSearch,
+        });
+    };
+
     return(
-        <div className="">
+        <>
             <div id= "header">
             <Nav />
             </div>
-            <div className="w-full bg-gray-200">
-                <div className="flex w-8/12  bg-gray-200 rounded-xl mx-auto shadow-lg overflow-hidden">
-                    <div className="w-1/2 py-10 px-8">
-                        <h1 className="text-3xl px-10 text-gray-700 font-bold mb-4">Velkommen til Teater events!</h1>
-                        <p className="px-10 text-gray-600">Her kan du finde og tilføje events</p>
-                    </div>
-                    <div className="w-1/2 py-10 px-8">
-                        <h1 className="text-3xl text-gray-700 font-bold mb-4">Events</h1>
-                        <div className="flex justify-between">
-                           
-                                <h2 className="text-2xl text-gray-700 font-bold mb-4"></h2>
-                                <p className="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in odio nec enim feugiat tincidunt. Nulla facilisi. Proin nec dui vitae purus luctus lacinia. Nulla facilisi. Proin nec dui vitae purus luctus lacinia.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div id="search" className="flex justify-center">
+                <Form id="search-field"
+                role="search"
+                onChange={handleFilterSubmit}
+                className="flex space-x-4">
+                    <label>
+                        Search by title {""}
+                        <input
+                            aria-label="Search by title"
+                            placeholder="Search"
+                            type="search"
+                            name="q"
+                            defaultValue={q}
+                            className="border-gray-400 rounded-md"
+                        />
+                    </label>
+                    <label>
+                        Filter by tags {""}
+                        <select
+                            name="tag"
+                            defaultValue={filterTags}
+                            className="border-gray-400 rounded-md">
+                            <option value="">All</option>
+                            {tags.map((tag) => (
+                                <option key={tag} value={tag}>
+                                    {tag}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
+                    <label>
+                        Sort by {""}
+                        <select
+                            name="sort-by"
+                            defaultValue={sortBy}
+                            className="border-gray-400 rounded-md">
+                            <option value="date">Date</option>
+                            <option value="title">Title</option>
+                        </select>
+                    </label>
+
+                </Form>
             </div>
+            <div id="events" className="flex flex-wrap justify-center">
+                {events.map((event) => (
+                    <div key={event._id} className="event-card">
+                        <Link to={`/event/${event._id}`}>
+                            <img src={event.image} alt={event.title} />
+                            <h2>{event.title}</h2>
+                            <p>{event.date.toDateString()}</p>
+                        </Link>
+                    </div>
+                ))}
+            </div>
+        </>
     );
 };
-
-//<div>
-//{events.map((Event) =>(
-    //<Link key={Event._id} to={`${Event._id}`}>
-    //<h2 className="text-2xl text-gray-700 font-bold mb-4">{Event.title}</h2>
-    //<p className="text-gray-600">{Event.description}</p>
-//</Link>
-//))}
