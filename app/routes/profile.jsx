@@ -7,7 +7,7 @@ export async function loader({request, params}) {
         failureRedirect: "/signin",
     });
 
-    const userInfo = await mongoose.models.User.findById(user._id)
+    const userInfo = await mongoose.models.User.findById(params.userId)
     .populate("events");
 
     return {userInfo};
