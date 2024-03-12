@@ -94,7 +94,6 @@ async function insertData() {
     location: "Odense",
     user: carsten._id,
     tags: ["audition", "teater"]
-  },
-
+  }
   ]);
 }
