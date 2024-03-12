@@ -26,7 +26,7 @@ return { success: true}
 
     const events = await mongoose.models.Event.find(query)
     .sort(sortOptions)
-    .populate("User");
+    .populate("user");
 
     const specialTags = await mongoose.models.Event.aggregate([
         { $unwind: "$tags" },
