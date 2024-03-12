@@ -11,15 +11,15 @@ export function meta() {
 };
 
 // LOADER 
-export async function loader({ request }) {
+//export async function loader({ request }) {
   //await authenticator.isAuthenticated(request, {
     //failureRedirect: "/signin",
   //});
 
 
 
-  const events = await mongoose.models.Event.find();  
-};
+  //const events = await mongoose.models.Event.find();  
+//};
 //export default function action(){
 
 //};
