@@ -1,7 +1,8 @@
-import { useLoaderData, params } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
 import { mongoose } from "mongoose";
 
-export const loader = async ({ request }) => {
+export const loader = async ({request }) => {
     async ({ params}) => {
         const Event = await mongoose.events.find({ _id: params.eventsId })
         if(!Event) throw new Error("Event not found")

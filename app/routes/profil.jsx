@@ -1,18 +1,19 @@
 import { useLoaderData} from "@remix-run/react";
 import { mongoose } from "mongoose";
+import { authenticator } from "~/services/auth.server";
 
-export const loader = async ({ params }) => {
-    async ({ params }) => {
-        const User = await mongoose.User.find({ _id: params.UserId })
-        if(!User) throw new Error("Event not found")
-
-        const data = { User }
-        return data
-};
+export const loader = async ({ request }) => {
+    const user = await authenticator.isAuthenticated(request, {
+        failureRedirect: "/signin",
+    });
+    console.log(user);
+    const userInfo = await mongoose.models.User.findById(User._id).exec();
+    return { data: userInfo };
 }
 
 export default function Profil(){
     const { User } = useLoaderData();
+    console.log(User);
 
     return(
         <div>

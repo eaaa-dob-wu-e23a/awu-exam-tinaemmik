@@ -41,11 +41,10 @@ authenticator.use(
 );
 
 async function verifyUser({ email, password }) {
-    const User = mongoose.models.User.findOne({ email }).select("+password");
+    const User = await mongoose.models.User.findOne({ email }).select("+password").exec();
     if(!User){
         throw new AuthorizationError("No user found");
     }
-
     const passwordMatch = await bcrypt.compare(password, User.password);
     if(!passwordMatch){
         throw new AuthorizationError("Password does not match");

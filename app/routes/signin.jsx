@@ -6,7 +6,7 @@ import { sessionStorage } from "~/services/session.server";
 export async function loader({request}){
     
     return await authenticator.isAuthenticated(request,{
-        successRedirect: "/events._index",
+        successRedirect: "/dashboard",
     });
    
     const session = await sessionStorage.getSession(request.headers.get("Cookie"));
@@ -91,8 +91,8 @@ export default function SignIn() {
 export async function action({request}){
 
     return await authenticator.authenticate("user-pass", request, {
-        successRedirect: "/events._index",
-        failureRedirect: "/signin",
+        successRedirect: "/dashboard",
+        // failureRedirect: "/signin-fail",
     });
 
 };

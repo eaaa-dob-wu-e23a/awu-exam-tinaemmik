@@ -54,14 +54,14 @@ export default function AddEvent(){
 };
 
 export async function action({ request }) {
-    const User = await authenticator.isAuthenticated(request, {
+    const user = await authenticator.isAuthenticated(request, {
         failureRedirect: "/signin",
       });
-      console.log(User);
+      console.log(user);
 
       const formData = await request.formData();
-      const Event = Object.fromEntries(formData);
-      Event.User = User._id;
-        await mongoose.models.Event.create(Event);
+      const event = Object.fromEntries(formData);
+        event.user = user._id;
+        await mongoose.models.Event.create(event);
     return redirect("/events");
 }
