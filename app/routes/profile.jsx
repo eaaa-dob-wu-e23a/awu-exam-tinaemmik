@@ -2,12 +2,12 @@ import {Form, useLoaderData} from "@remix-run/react";
 import {authenticator} from "~/services/auth.server";
 import mongoose from "mongoose";
 
-export async function loader({request, params}) {
+export async function loader({request}) {
     const user = await authenticator.isAuthenticated(request, {
         failureRedirect: "/signin",
     });
 
-    const userInfo = await mongoose.models.User.findById(params.userId)
+    const userInfo = await mongoose.models.User.findById(user._id)
     .populate("events");
 
     return {userInfo};
