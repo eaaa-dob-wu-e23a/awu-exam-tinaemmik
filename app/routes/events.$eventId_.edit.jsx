@@ -67,7 +67,7 @@ export default function EditEvent(){
             </div>
             <div>
                 <label htmlFor="tags">Tags</label>
-                <input type="text" id="tags" name="tags" required defaultValue={event.tags}/>
+                <input type="text" id="tags" name="tags" required defaultValue={event.tags.toISOString().split(",")}/>
             </div>
             <div>
                 <button type="submit">Save</button>

@@ -18,7 +18,7 @@ export function meta() {
 export async function loader({request}) {
 
     await authenticator.isAuthenticated(request,{
-        successRedirect: "/events",
+        successRedirect: "/profile",
     });
 
     const session = await sessionStorage.getSession(request.headers.get("Cookie"));

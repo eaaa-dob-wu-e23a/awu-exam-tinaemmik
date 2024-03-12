@@ -91,7 +91,7 @@ export default function SignIn() {
 export async function action({request}){
 
     return await authenticator.authenticate("user-pass", request, {
-        successRedirect: "/dashboard",
+        successRedirect: "/profile",
         // failureRedirect: "/signin-fail",
     });
 
