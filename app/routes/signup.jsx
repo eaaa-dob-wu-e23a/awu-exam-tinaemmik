@@ -33,17 +33,6 @@ export async function loader({request}) {
     return json({error}, {headers});
 };
 
-//ACTION
-//export const action = ({request}) => {
-        //let formData = await request.formData();
-
-        //await new Promise((resolve) => setTimeout(resolve, 1000));
-
-        //const {name, city, email, password} = Object.fromEntries(formData);
-        //return await mongoose.models.User.create({name, city, email, password});
-    //};
-
-
 
 export default function SignUp() {
     const loaderData = useLoaderData();
