@@ -6,7 +6,7 @@ import { sessionStorage } from "~/services/session.server";
 export async function loader({request}){
     
     return await authenticator.isAuthenticated(request,{
-        successRedirect: "/events",
+        successRedirect: "/events._index",
     });
    
     const session = await sessionStorage.getSession(request.headers.get("Cookie"));
@@ -23,6 +23,7 @@ export async function loader({request}){
 
 export default function SignIn() {
     const loaderData = useLoaderData();
+    console.log("loaderData", loaderData);
 
     return (
         <div className="min h-screen py-40 bg-gray-700">
@@ -45,7 +46,7 @@ export default function SignIn() {
                                 name="email"
                                 type="email"
                                 required
-                                className="mt-1 block w-2/3 h-8 rounded-sm border-gray-400 shadow-md"
+                                className="mt-1  w-2/3 h-8 rounded-sm border-gray-400 shadow-md"
                             />
                         </div>
                         <div>
@@ -57,7 +58,7 @@ export default function SignIn() {
                                 name="password"
                                 type="password"
                                 required
-                                className="mt-1 block w-2/3 h-8 rounded-sm border-gray-400 shadow-md"
+                                className="mt-1 w-2/3 h-8 rounded-sm border-gray-400 shadow-md"
                             />
                         </div>
                         <div>
@@ -90,7 +91,7 @@ export default function SignIn() {
 export async function action({request}){
 
     return await authenticator.authenticate("user-pass", request, {
-        successRedirect: "/events",
+        successRedirect: "/events._index",
         failureRedirect: "/signin",
     });
 

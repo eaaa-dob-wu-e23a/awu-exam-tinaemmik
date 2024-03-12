@@ -29,28 +29,28 @@ authenticator.use(
 
         //verify user credentials
 
-        const user = await verifyUser({ email, password });
-        if(!user){
+        const User = await verifyUser({ email, password });
+        if(!User){
             throw new AuthorizationError("User not found");
         }
-        console.log(user);
-        return user;
+        console.log(User);
+        return User;
     }),
 
     "user-pass"
 );
 
 async function verifyUser({ email, password }) {
-    const user = mongoose.models.User.findOne({ email }).select("+password");
-    if(!user){
+    const User = mongoose.models.User.findOne({ email }).select("+password");
+    if(!User){
         throw new AuthorizationError("No user found");
     }
 
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, User.password);
     if(!passwordMatch){
         throw new AuthorizationError("Password does not match");
     }
 
-    user.password = undefined;
-    return user;
+    User.password = undefined;
+    return User;
 };

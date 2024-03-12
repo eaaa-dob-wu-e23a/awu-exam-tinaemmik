@@ -22,3 +22,5 @@ export default function Profil(){
         </div>
 );
 };
+
+//await authenticator.logout(request, { redirectTo: "/xxxxx" });
