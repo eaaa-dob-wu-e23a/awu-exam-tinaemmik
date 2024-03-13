@@ -10,7 +10,7 @@ export async function action({ request, params }) {
   const eventDelete = await mongoose.models.Event.findById(params.eventId);
 
   if (eventDelete.User.id != request.user.id) {
-    return redirect(`/events/${params.eventId}`);
+    return redirect(`/events/${params.eventId}/`);
   }
 
   await eventDelete.remove();
