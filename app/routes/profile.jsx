@@ -7,14 +7,17 @@ export async function loader({request}) {
         failureRedirect: "/signin",
     });
 
-    const userInfo = await mongoose.models.User.findById(user._id)
-    .populate("events");
+    const userInfo = await mongoose.models.User.findById(user._id);
+    const eventsInfo = await mongoose.models.Event.findById(user._id);
 
-    return {userInfo};
+    user._id = Event.user;
+
+
+    return {userInfo, eventsInfo};
 }
 
 export default function Profile() {
-    const { userInfo } = useLoaderData();
+    const { userInfo, eventsInfo } = useLoaderData();
 
     return (
         <div>
@@ -27,9 +30,9 @@ export default function Profile() {
 
             <h2>Dine Events</h2>
             <ul>
-                {userInfo.events.map((event) => (
-                    <li key={event.id}>
-                        <a href={`/events/${event.id}`}>{event.title}</a>
+                {Object.eventsInfo.map((Event) => (
+                    <li key={eventsInfo.id}>
+                        <a href={`/events/${Event.id}`}>{eventsInfo.title}</a>
                     </li>
                 ))}
             </ul>

@@ -3,6 +3,7 @@ import { Form, useNavigate } from "@remix-run/react";
 import mongoose from "mongoose";
 import { authenticator } from "~/services/auth.server";
 import { useState } from "react";
+import Nav from "~/components/Nav.jsx";
 
 export async function loader({ request }) {
     return await authenticator.isAuthenticated(request, {
@@ -20,48 +21,81 @@ export default function AddEvent() {
 
     return (
         <>
-        <h1>Add Event</h1>
-        <Form method="post" id="event-form">
+        <Nav />
+        <div className="py-10 bg-gray-200" >
+        <h1 className="text-3xl py-10 text-gray-700 font-bold mb-4 text-center">Add Event</h1>
+        <div className="flex w-4/12 rounded-xl mx-auto overflow-hidden">
+        <Form method="post" id="event-form" className="space-y-6 ">
             <div>
-                <label htmlFor="title">Title</label>
-                <input type="text" id="title" name="title" required />
+                <label htmlFor="title"className="block text-md font-medium py-2 text-gray-600">Title</label>
+                <input 
+                type="text" 
+                id="title" 
+                name="title" 
+                required 
+                className="mt-1 block w-50 h-8 rounded-sm border-gray-400 shadow-md" />
             </div>
             <div>
-                <label htmlFor="description">Description</label>
-                <textarea id="description" name="description" required />
+                <label htmlFor="description"className="block text-md py-2 font-medium text-gray-600">Description</label>
+                <textarea 
+                id="description" 
+                name="description"
+                placeholder="Write a description..."
+                className="mt-1 block w-50 h-30 rounded-sm border-gray-400 shadow-md" 
+                required />
             </div>
             <div>
-                <label htmlFor="image">Image URL</label>
+                <label htmlFor="image" className="block text-md py-2 font-medium text-gray-600">Image URL</label>
                 <input
                     name="image"
                     type="url"
                     onChange={(e) => setImage(e.target.value)}
                     placeholder="Paste an image URL..."
+                    className="mt-1 block w-50 h-8 rounded-sm border-gray-400 shadow-md" 
                 />
-                <label htmlFor="image-preview">Image Preview</label>
+                <label htmlFor="image-preview" className="block text-md py-2 font-medium text-gray-600">Image Preview</label>
                 <img
                     id="image-preview"
-                    className="image-preview"
                     src={image}
                     alt="Choose"
                     onError={(e) => (e.target.src = "https://placehold.co/600x400?text=Error+loading+image")}
+                    className="mt-1 block h-60 rounded-sm border-gray-400 shadow-md" 
                 />
             </div>
             <div>
-                <label htmlFor="date">Date</label>
-                <input type="date" id="date" name="date" required />
+                <label htmlFor="date" className="block text-md py-2 font-medium text-gray-600">Date</label>
+                <input 
+                type="date" 
+                id="date" 
+                name="date" 
+                className="mt-1 block w-50 h-8 rounded-sm border-gray-400 shadow-md" 
+                required />
             </div>
             <div>
-                <label htmlFor="location">Location</label>
-                <input type="text" id="location" name="location" required />
+                <label htmlFor="location" className="block text-md py-2 font-medium text-gray-600">Location</label>
+                <input type="text" 
+                id="location"
+                name="location" 
+                className="mt-1 block w-50 h-8 rounded-sm border-gray-400 shadow-md" 
+                required />
             </div>
             <div>
-                <label htmlFor="tags">Tags</label>
-                <input type="text" id="tags" name="tags" />
+                <label htmlFor="tags"className="block text-md py-2 font-medium text-gray-600">Tags</label>
+                <input type="text"
+                 id="tags"
+                name="tags"
+                className="mt-1 block w-50 h-8 rounded-sm border-gray-400 shadow-md"/>
             </div>
-            <button type="submit">Add Event</button>
-            <button type="button" onClick={cancelHandler}>Cancel</button>
+            <div className="flex justify-center space-x-6">
+            <button type="submit"
+            className="w-40 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-300">Add Event</button>
+            <button type="button"
+            className="w-40 bg-red-500 text-white py-2 rounded-md hover:bg-red-300"
+            onClick={cancelHandler}>Cancel</button>
+            </div>
         </Form>
+        </div>
+        </div>
         </>
     );
 
